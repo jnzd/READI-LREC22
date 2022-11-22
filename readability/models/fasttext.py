@@ -80,7 +80,8 @@ def classify_corpus_fasttext(corpus, model_name = "fasttext"):
     r = models.compute_evaluation_metrics(results_summary[0],round=2, data_name="", class_names=corpus_label_names)
     models.pp.pprint(r)
 
-    return r
+    return ktrain.get_predictor(learner.model, preproc)
+    # return r
 
 # -------------------- Ignore these, only used for reproducing READI paper contents -------------------
 
