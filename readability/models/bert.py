@@ -5,7 +5,7 @@ import random
 import csv
 import ktrain
 from ktrain import text
-from ktrain.text.preprocessor import TextPreprocessor
+from ktrain.text.preprocessor import BERTPreprocessor
 import os
 
 def classify_corpus_BERT(corpus, model_name = "camembert-base", percent_train=90):
@@ -91,7 +91,18 @@ def classify_corpus_BERT(corpus, model_name = "camembert-base", percent_train=90
     results_summary.append(cm_init)
     r = models.compute_evaluation_metrics(results_summary[0],round=2, data_name="", class_names=corpus_label_names)
     models.pp.pprint(r)
-    return ktrain.get_predictor(learner.model, TextPreprocessor), r
+    NUM_WORDS = 50000
+    MAXLEN = 150
+    NGRAMS_SIZE = 1
+    preproc = BERTPreprocessor(
+        maxlen = MAXLEN, 
+        max_features = NUM_WORDS,
+        class_names=corpus_label_names,
+        classes=[],
+        lang="fr",
+        ngram_range=NGRAMS_SIZE,
+        multilabel=None)
+    return ktrain.get_predictor(learner.model, preproc), r
 
 def getTransformer(model_name, x_train, y_train, x_test, y_test, class_names, batch_size=6):
     """Uses the ktrain library to load a BERT model, then creates a learner object based on data split into train/test"""
