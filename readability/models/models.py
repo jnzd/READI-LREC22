@@ -55,6 +55,7 @@ def compute_evaluation_metrics(cm, round = -1, data_name = '', class_names=''):
   results['weighted_average_precision'] = weighted_average_recall
   results['weighted_average_recall'] = weighted_average_recall
   results['weighted_average_fmeasure'] = weighted_average_fmeasure
+  results['confusion-matrix'] = cm
   
   if round>0:
     results['precision'] = np.round(precision, round)
