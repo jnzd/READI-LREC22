@@ -8,7 +8,7 @@ from ktrain import text
 from ktrain.text.preprocessor import TransformersPreprocessor
 import os
 
-def classify_corpus_BERT(corpus, model_name = "camembert-base", percent_train=90):
+def classify_corpus_BERT(corpus, model_name = "camembert-base", test_corpus=None, percent_train=90):
     """
     Imports, configures, and trains a BERT model.
 
@@ -39,18 +39,26 @@ def classify_corpus_BERT(corpus, model_name = "camembert-base", percent_train=90
     for index,text in enumerate(x):
         x[index] = " ".join(text)
 
-    # Get a reproducible split of train/test proportion.
-    len_train = round(len(x)/100*percent_train)
     random.seed(random_seed)
     x_y = list(zip(x,y))
     random.shuffle(x_y)
     x, y = zip(*x_y)
     x = list(x)
     y = list(y)
-    x_train = x[:len_train]
-    x_test = x[len_train:]
-    y_train = y[:len_train]
-    y_test = y[len_train:]
+
+    # Get a reproducible split of train/test proportion.
+    if test_corpus is None:
+        len_train = round(len(x)/100*percent_train)
+        x_train = x[:len_train]
+        x_test = x[len_train:]
+        y_train = y[:len_train]
+        y_test = y[len_train:]
+    else:
+        x_train, y_train = (x, y)
+        x_test, y_test = utils.convert_corpus_to_list(test_corpus)
+        # Need to de-tokenize texts, to let the transformer model do it itself with extra information.
+        for index,text in enumerate(x_test):
+            x_test[index] = " ".join(text)
     # Load transformer model 
     print ('Loading transformer model..')
     t, trn, val, model, learner = getTransformer(model_name, x_train, y_train, x_test, y_test, corpus_label_names, batch_size = 32)

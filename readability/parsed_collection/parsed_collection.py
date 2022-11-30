@@ -410,5 +410,5 @@ class ParsedCollection:
         :param str model_name: Choice of language model to use : bert-base-multilingual-cased, camembert-base, flaubert/flaubert_base_cased
         :return: Classification task metrics, as detailed in .models.compute_evaluation_metrics()
         """
-        return self.readability_processor.classify_corpus_BERT(self, model_name)
+        return self.readability_processor.classify_corpus_BERT(self, model_name, test_corpus=None)
 

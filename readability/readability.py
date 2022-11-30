@@ -660,7 +660,7 @@ class Readability:
         func = fasttext.classify_corpus_fasttext
         return func(collection, model_name)
         
-    def classify_corpus_BERT(self, collection, model_name = "camembert-base"):
+    def classify_corpus_BERT(self, collection, model_name = "camembert-base", test_corpus=None):
         """
         Imports, configures, and trains a BERT model.
         
@@ -669,4 +669,4 @@ class Readability:
         :return: Classification task metrics, as detailed in .models.compute_evaluation_metrics()
         """
         func = bert.classify_corpus_BERT
-        return func(collection, model_name)
+        return func(collection, model_name, test_corpus=test_corpus)
