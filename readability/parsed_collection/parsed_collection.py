@@ -402,7 +402,7 @@ class ParsedCollection:
         :return: Classification task metrics, as detailed in .models.compute_evaluation_metrics()
         """
         return self.readability_processor.classify_corpus_fasttext(self, model_name)
-    def classify_corpus_BERT(self, model_name="camembert-base"):
+    def classify_corpus_BERT(self, model_name="camembert-base", test_corpus=None):
         """
         Imports, configures, and trains a BERT model.
         
@@ -410,5 +410,5 @@ class ParsedCollection:
         :param str model_name: Choice of language model to use : bert-base-multilingual-cased, camembert-base, flaubert/flaubert_base_cased
         :return: Classification task metrics, as detailed in .models.compute_evaluation_metrics()
         """
-        return self.readability_processor.classify_corpus_BERT(self, model_name, test_corpus=None)
+        return self.readability_processor.classify_corpus_BERT(self, model_name, test_corpus=test_corpus)
 
